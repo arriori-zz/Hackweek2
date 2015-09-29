@@ -1,0 +1,24 @@
+﻿<ons-navigator var="RoomsNavigator">
+    <ons-page ng-controller="RoomsController">
+        <ons-toolbar>
+            <div class="center">Rooms</div>
+        </ons-toolbar>
+
+        <ons-list>
+            <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
+                <ons-row>
+                    <ons-col width="60px">
+                        <div class="item-thum"></div>
+                    </ons-col>
+                    <ons-col>
+                        <header>
+                            <span class="item-title">{{item.title}}</span>
+                            <span class="item-label">{{item.label}}</span>
+                        </header>
+                        <p class="item-desc">{{item.desc}}</p>
+                    </ons-col>
+                </ons-row>
+            </ons-list-item>
+        </ons-list>
+    </ons-page>
+</ons-navigator>
