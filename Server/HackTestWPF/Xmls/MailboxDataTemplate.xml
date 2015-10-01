@@ -1,0 +1,7 @@
+﻿<t:MailboxData>
+  <t:Email>
+    <t:Address>{0}</t:Address>
+  </t:Email>
+  <t:AttendeeType>Required</t:AttendeeType>
+  <t:ExcludeConflicts>false</t:ExcludeConflicts>
+</t:MailboxData>

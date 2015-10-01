@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+  <soap:Header>
+    <t:RequestServerVersion Version="Exchange2010" />
+    <t:TimeZoneContext>
+      <t:TimeZoneDefinition Name="Uruguay Standard Time" Id="Uruguay Standard Time">
+        <t:Periods>
+          <t:Period Bias="P0DT3H0M0.0S" Name="Standard" Id="Std" />
+        </t:Periods>
+        <t:TransitionsGroups>
+          <t:TransitionsGroup Id="0">
+            <t:AbsoluteDateTransition>
+              <t:To Kind="Period">Std</t:To>
+              <t:DateTime>2007-01-01T08:00:00.000Z</t:DateTime>
+            </t:AbsoluteDateTransition>
+          </t:TransitionsGroup>
+        </t:TransitionsGroups>
+        <t:Transitions>
+          <t:Transition>
+            <t:To Kind="Group">0</t:To>
+          </t:Transition>
+        </t:Transitions>
+      </t:TimeZoneDefinition>
+    </t:TimeZoneContext>
+  </soap:Header>
+  <soap:Body>
+    <GetUserAvailabilityRequest xmlns="http://schemas.microsoft.com/exchange/services/2006/messages"
+                xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+      <t:TimeZone xmlns="http://schemas.microsoft.com/exchange/services/2006/types">
+        <Bias>-360</Bias>
+      </t:TimeZone>
+      <MailboxDataArray>
+        {0}
+      </MailboxDataArray>
+      <t:FreeBusyViewOptions>
+        <t:TimeWindow>
+          <t:StartTime>{1}</t:StartTime>
+          <t:EndTime>{2}</t:EndTime>
+        </t:TimeWindow>
+        <t:MergedFreeBusyIntervalInMinutes>30</t:MergedFreeBusyIntervalInMinutes>
+        <t:RequestedView>DetailedMerged</t:RequestedView>
+      </t:FreeBusyViewOptions>
+      <t:SuggestionsViewOptions>
+        <t:GoodThreshold>49</t:GoodThreshold>
+        <t:MaximumResultsByDay>5</t:MaximumResultsByDay>
+        <t:MaximumNonWorkHourResultsByDay>0</t:MaximumNonWorkHourResultsByDay>
+        <t:MeetingDurationInMinutes>{3}</t:MeetingDurationInMinutes>
+        <t:MinimumSuggestionQuality>Good</t:MinimumSuggestionQuality>
+        <t:SuggestionIntervalInMinutes>15</t:SuggestionIntervalInMinutes>
+        <t:DetailedSuggestionsWindow>
+          <t:StartTime>{1}</t:StartTime>
+          <t:EndTime>{2}</t:EndTime>
+        </t:DetailedSuggestionsWindow>
+      </t:SuggestionsViewOptions>
+    </GetUserAvailabilityRequest>
+  </soap:Body>
+</soap:Envelope>

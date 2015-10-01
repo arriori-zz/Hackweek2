@@ -8,10 +8,9 @@ namespace Server.Model
 {
     public class Room
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
-
-        public int LocationId { get; set; }
+        public string Location { get; set; }
+        public string Id { get; set; }
+        public string EmailAddress { get; set; }
     }
 }

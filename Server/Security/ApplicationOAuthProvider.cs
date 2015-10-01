@@ -6,6 +6,8 @@ using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin.Security;
 using System.Collections.Generic;
 using System.Linq;
+using Server.HackTestWPF;
+using System.Net;
 
 namespace Server
 {
@@ -51,16 +53,30 @@ namespace Server
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var allowedOrigin = "*";
-            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
+            var service = new HackExchangeService();
+            var credentials = new NetworkCredential(context.UserName, context.Password);
+            HackExchangeContext hackContext;
+            try
+            {
+               var displayName= service.Login(credentials, out hackContext);
+                if(displayName == null)
+                {
+                    context.SetError("invalid_grant", "The user name or password is incorrect.");
+                    return;
+                }
 
-            if (context.UserName != "reportplususer@infragistics.com" || context.Password != "%baG7cadence")
+            }
+            catch
             {
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
                 return;
             }
 
-            var endpoint = "asdasdasd";
+            var allowedOrigin = "*";
+
+            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
+
+            var endpoint = hackContext.Endpoint;
 
             var claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, context.UserName));

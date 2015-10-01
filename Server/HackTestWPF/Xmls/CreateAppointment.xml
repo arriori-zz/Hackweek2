@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"
+    xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
+    xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Header>
+    <t:TimeZoneContext>
+      <t:TimeZoneDefinition Name="Uruguay Standard Time" Id="Uruguay Standard Time">
+        <t:Periods>
+          <t:Period Bias="P0DT3H0M0.0S" Name="Standard" Id="Std" />
+        </t:Periods>
+        <t:TransitionsGroups>
+          <t:TransitionsGroup Id="0">
+            <t:AbsoluteDateTransition>
+              <t:To Kind="Period">Std</t:To>
+              <t:DateTime>2007-01-01T08:00:00.000Z</t:DateTime>
+            </t:AbsoluteDateTransition>
+          </t:TransitionsGroup>
+        </t:TransitionsGroups>
+        <t:Transitions>
+          <t:Transition>
+            <t:To Kind="Group">0</t:To>
+          </t:Transition>
+        </t:Transitions>
+      </t:TimeZoneDefinition>
+    </t:TimeZoneContext>
+  </soap:Header>
+  <soap:Body>
+    <m:CreateItem SendMeetingInvitations="SendToAllAndSaveCopy">
+      <m:Items>
+        <t:CalendarItem>
+          <t:Subject>{0}</t:Subject>
+          <t:Body BodyType="Text">{1}</t:Body>
+          <t:Start>{2}</t:Start>
+          <t:End>{3}</t:End>
+          <t:Location>{4}</t:Location>
+          <t:RequiredAttendees>
+            {5}
+          </t:RequiredAttendees>
+          <t:Resources>
+            {6}
+          </t:Resources>
+        </t:CalendarItem>
+      </m:Items>
+    </m:CreateItem>
+  </soap:Body>
+</soap:Envelope>

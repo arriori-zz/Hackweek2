@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types"
+    xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages">
+  <soap:Header>
+    <t:RequestServerVersion Version="Exchange2013" />
+  </soap:Header>
+  <soap:Body >
+    <m:FindPeople>
+      <m:PersonaShape>
+        <t:BaseShape>IdOnly</t:BaseShape>
+        <t:AdditionalProperties>
+          <t:FieldURI FieldURI="persona:DisplayName"/>
+          <t:FieldURI FieldURI="persona:Title"/>
+          <t:FieldURI FieldURI="persona:EmailAddress"/>
+          <t:FieldURI FieldURI="persona:PersonaType"/>
+          <t:FieldURI FieldURI="persona:OfficeLocations"/>
+        </t:AdditionalProperties>
+      </m:PersonaShape>
+      <m:IndexedPageItemView BasePoint="Beginning" MaxEntriesReturned="10000" Offset="0"/>
+      <m:ParentFolderId>
+        <t:DistinguishedFolderId Id="directory"/>
+      </m:ParentFolderId>
+      <m:QueryString>Room</m:QueryString>
+    </m:FindPeople>
+  </soap:Body>
+</soap:Envelope>

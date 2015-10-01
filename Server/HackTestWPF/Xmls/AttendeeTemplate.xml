@@ -1,0 +1,5 @@
+﻿<t:Attendee>
+  <t:Mailbox>
+    <t:EmailAddress>{0}</t:EmailAddress>
+  </t:Mailbox>
+</t:Attendee>
