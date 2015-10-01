@@ -60,14 +60,18 @@ namespace Server
                 return;
             }
 
+            var endpoint = "asdasdasd";
+
             var claims = new List<Claim>();
-            //claims.Add(new Claim(ClaimTypes., context.UserName));
+            claims.Add(new Claim(ClaimTypes.Name, context.UserName));
+            claims.Add(new Claim("Endpoint", endpoint));
+            claims.Add(new Claim("Password", context.Password));
 
             var data = await context.Request.ReadFormAsync();
 
             var identity = new ClaimsIdentity("JWT");
 
-            //identity.AddClaims(claims);
+            identity.AddClaims(claims);
 
             int daysSignedIn = 14;
             context.Options.AccessTokenExpireTimeSpan = TimeSpan.FromDays(daysSignedIn);

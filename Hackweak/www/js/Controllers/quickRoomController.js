@@ -3,7 +3,7 @@
     $scope.init = function () {
         $scope.lifesize = true;
         $scope.time = 30;
-        $scope.booked = false;
+        $scope.state = 'registering';
 
         $data.getLocations().then(function (result) {
             $scope.selectedLocation = result[0];
@@ -45,22 +45,21 @@
                 $scope.bookedRoom = result.Room.Name;
 
                 $scope.bookedTimeEnd = $scope.getTime(result.End);
-                $scope.booked = true;
+                $scope.state = 'booked';
             }
             else {
-
                 $scope.nextRoom = result.Room.Name;
                 $scope.bookedTimeEnd = $scope.getTime(result.End);
                 $scope.nextRoomTime = $scope.getTime(result.Start);
                 $scope.possibleBook = result;
-                $scope.noRoomModal.show();
+                $scope.state = 'notBooked';
                 
             }
         });
     }
 
     $scope.dontBook = function(){
-        $scope.noRoomModal.hide();
+        $scope.state = 'registering';
     }
 
     $scope.pleaseBook = function () {
@@ -70,15 +69,18 @@
                 $scope.bookedRoom = result.Room.Name;
 
                 $scope.bookedTimeEnd = $scope.getTime(result.End);
-                $scope.booked = true;
+                $scope.state = 'booked';
             }
             else {
                 alert("Ouch! somone just took the room.");
             }
         })
-
-        $scope.noRoomModal.hide();
     }
+
+    $scope.logoutClick = function () {
+        $scope.logoutModal.show();
+    }
+
 
     $scope.init();
 });
@@ -103,14 +105,14 @@ module.controller('LocationController', function ($scope, $data) {
     $scope.init();
 });
 
-module.controller('NoRoomController', function ($scope, $data) {
-   
-    $scope.yes = function () {
-        $scope.$parent.pleaseBook();
-    }
 
-    $scope.no = function () {
-        $scope.$parent.dontBook();
-    };
+module.controller('LogoutController', function ($scope, $data, $localStorage) {
+
+    $scope.logout = function () {
+
+     $localStorage.credentials = null;
+     $localStorage.token = null;
+     $scope.$parent.$parent.openLoginModal();
+    }
 
 });

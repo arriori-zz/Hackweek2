@@ -1,9 +1,15 @@
-﻿module.controller('AppController', function ($scope, $data, $localStorage) {
+﻿module.controller('AppController', function ($scope, $data, $localStorage, $http) {
 
     ons.ready(function () {
 
         if ($localStorage.credentials) {
+
+            if ($localStorage.token) {
+                $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.token;
+            }
+
             $scope.showPage("quickRoom");
+
         }
         else {
             $scope.loginmodal.show();
@@ -28,8 +34,14 @@
         $scope.loginmodal.show();
     });
     */
+
+    $scope.openLoginModal = function () {
+
+        $scope.loginmodal.show();
+     };
    
 });
+
 
 
 

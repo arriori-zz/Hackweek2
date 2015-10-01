@@ -4,22 +4,28 @@ module.factory('$data', function ($http, $q, $localStorage) {
 
       var data = {};
 
-    /* data.login = function (user, password) {
-          data.credentials = {};
-          data.credentials.UserName = user;
-          data.credentials.Password = password;
+     //data.login = function (user, password) {
+     //     data.credentials = {};
+     //     data.credentials.UserName = user;
+     //     data.credentials.Password = password;
 
-          var deferred = $q.defer();
+     //     var deferred = $q.defer();
 
-          $http.post(serverUrl + "/api/exchange/login", data.credentials)
-            .success(function (response) {
-                deferred.resolve(true);
-            }).error(function () {
-                deferred.resolve(false);
-            });
+     //     $http.post(serverUrl + "/api/exchange/login", data.credentials)
+     //       .success(function (response) {
+     //           var credentials = {};
+     //           credentials.userName = user;
+     //           credentials.password = password;
+     //           $localStorage.credentials = credentials;
+     //           deferred.resolve(true);
 
-          return deferred.promise;
-      };*/
+
+     //       }).error(function () {
+     //           deferred.resolve(false);
+     //       });
+
+     //     return deferred.promise;
+     // };
 
      data.login = function (user, password) {
 
@@ -44,8 +50,8 @@ module.factory('$data', function ($http, $q, $localStorage) {
              $localStorage.credentials = credentials;
              $localStorage.token = response.access_token;
 
-             $http.defaults.headers.common.Authorization = response.access_token;
-
+             $http.defaults.headers.common.Authorization = 'Bearer ' + response.access_token;
+                     
              deferred.resolve(true);
          }).error(function () {
 
@@ -104,8 +110,6 @@ module.factory('$data', function ($http, $q, $localStorage) {
       return data;
  });
 
-
-
 module.factory('authInterceptor', [
      '$q', '$injector', function authInterceptor($q, $injector, $http) {
          return {
@@ -114,11 +118,15 @@ module.factory('authInterceptor', [
 
                  if (isForbiddenResponse(rejection)) {
 
+                     var deferred = $q.defer();
+
                      var $localStorage = $injector.get('$localStorage');
                      var $http = $injector.get('$http');
 
                      if ($localStorage.credentials) {
-                         var params = { grant_type: "password", userName: $localStorage.credentials.userName, password: $localStorage.credentials.userName.password };
+
+
+                         var params = { grant_type: "password", userName: $localStorage.credentials.userName, password: $localStorage.credentials.password };
 
                          var transform = function (obj) {
                              var str = [];
@@ -133,20 +141,33 @@ module.factory('authInterceptor', [
                          }).success(function (response) {
 
                              var credentials = {};
-                             credentials.userName = user;
-                             credentials.password = password;
-                             $localStorage.credentials = credentials;
+                             credentials.userName = $localStorage.credentials.userName;
+                             credentials.password = $localStorage.credentials.password;
                              $localStorage.token = response.access_token;
 
-                             $http.defaults.headers.common.Authorization = response.access_token;
+                             $http.defaults.headers.common.Authorization = 'Bearer ' + response.access_token;
+
+                             function successCallback(response){
+                                 deferred.resolve(response);
+                             }
+
+                             function errorCallback(response){
+                                 deferred.reject(response);
+                             }
+
+                             rejection.config.headers.Authorization = 'Bearer ' + response.access_token;
+
+                             $http(rejection.config).then(successCallback, errorCallback);
 
                          }).error(function () {
 
                              $localStorage.credentials = null;
                              $localStorage.token = null;
 
-                             return $q.reject(rejection);
+                             return deferred.reject(rejection);
                          });
+
+                         return deferred.promise;
                      }
                      else {
                          return $q.reject(rejection);

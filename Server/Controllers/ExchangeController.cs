@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Web.Http;
 
 namespace Server.Controllers
 {
-   // [Authorize]
+   [Authorize]
     public class ExchangeController : ApiController
     {
         Location[] locations = new Location[]
@@ -25,19 +26,19 @@ namespace Server.Controllers
             new Room {Id = 4,  Name = "Mon D (No lifesize)", LocationId = 1}
         };
 
-        /*
         [Route("api/exchange/login")]
         [HttpPost]
         public IHttpActionResult Login(LoginCredentials credentials)
         {
-            var loginResult = new LoginResult() { UserName = "Pepe"  };
+            var loginResult = new LoginResult() {   };
             return Ok(loginResult);
-        }*/
+        }
 
         [Route("api/exchange/bookRoom")]
         [HttpPost]
         public IHttpActionResult BookRoom(BookRoomParam param)
         {
+          
             // If there is room available
             var bookResult = new BookResult() { Booked = true, Room = rooms[0], Start = DateTime.Now, End = DateTime.Now.AddMinutes(param.Time)};
 
@@ -65,7 +66,22 @@ namespace Server.Controllers
         [HttpGet]
         public IEnumerable<Location> GetLocations()
         {
+            var credentials = GetLoginCredentials();
+
             return locations;
+        }
+
+        private LoginCredentials GetLoginCredentials()
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            var endpoint = claims.FirstOrDefault(c => c.Type == "Endpoint").Value;
+            var password = claims.FirstOrDefault(c => c.Type == "Password").Value;
+
+            var userName = User.Identity.Name;
+
+            return new LoginCredentials() { Endpoint = endpoint, UserName = userName, Password = password };
         }
     }
 
@@ -74,6 +90,8 @@ namespace Server.Controllers
         public string UserName { get; set; }
 
         public string Password { get; set; }
+
+        public string Endpoint { get; set; }
     }
 
     public class BookRoomParam

@@ -11,11 +11,11 @@
                 </ons-col>
 
                 <ons-col align="right">
-                    <ons-icon icon="ion-ios-person-outline" style="margin-top: 5px; margin-right:20px; color: gray; font-size: 30px;"></ons-icon>
+                    <ons-icon icon="ion-ios-person-outline" style="margin-top: 5px; margin-right:20px; color: gray; font-size: 30px;" ng-click="logoutClick()"></ons-icon>
                 </ons-col>
 
             </ons-row>
-            <div ng-class="ng-hide" style="text-align: center" ng-show="booked == false">
+            <div ng-class="ng-hide" style="text-align: center" ng-show="state == 'registering'">
 
                 <section style="padding: 8px; margin-top: 40px; font-size: 30px ">
                     Search a room now
@@ -47,11 +47,23 @@
                 </section>
 
             </div>
-            <div  ng-class="ng-hide" style="text-align: center" ng-show="booked == true">
+            <div  ng-class="ng-hide" style="text-align: center" ng-show="state == 'booked'">
                 <ons-icon icon="ion-ios-checkmark-outline" style="font-size: 130px; color:green; margin-top: 100px;"></ons-icon>
                 <div style="font-size: 30px;">{{bookedRoom}}</div>
                 <div style="font-size: 14px;">You have this room until <b>{{bookedTimeEnd}}</b></div>
                 <ons-button style="margin-top: 40px"  modifier="quiet" >Room Details</ons-button>
+            </div>
+            <div ng-class="ng-hide" style="text-align: center" ng-show="state == 'notBooked'">
+                <ons-icon icon="ion-thumbsdown" style="font-size: 130px; color:red; margin-top: 100px;"></ons-icon>
+                <div style="text-align: center;background: white; color:black;">
+                    <p>  No room available now</p>
+                    <p>The next room available is:</p>
+                    <p>{{nextRoom}}</p>
+                    <p>at {{nextRoomTime}}</p>
+                    <p>Do you want to book it?</p>
+                    <ons-button modifier="outline" style="width: 45%" ng-click="dontBook()">No</ons-button>
+                    <ons-button style="width: 45%" ng-click="pleaseBook()">Yes</ons-button>
+                </div>
             </div>
     </ons-page>
     </ons-navigator>
@@ -61,24 +73,14 @@
             <ons-list-item ng-repeat="location in locations" modifier="tappable" ng-click="selectLocation(location)">{{location.Name}}</ons-list-item>
         </ons-list>
     </ons-modal>
-    <ons-modal var="noRoomModal" ng-controller="NoRoomController" >
-        <div style="width: 90%;background: white; color:black; padding: 8px; margin-left:3%">
-            <ons-toolbar inline>
-                <div class="center">
-                    No room available now
-                </div>
-            </ons-toolbar>
-            <div style="text-align: center;background: white; color:black;">
-                <p>The next room available is:</p>
-                <p>{{$parent.nextRoom}}</p>
-                <p>at {{$parent.nextRoomTime}}</p>
-                <p>Do you want to book it?</p>
-                <ons-button modifier="outline" style="width: 45%" ng-click="no()">No</ons-button>
-                <ons-button style="width: 45%" ng-click="yes()">Yes</ons-button>
-            </div>
+    <ons-modal var="loadingmodal">
+        <ons-icon icon="spinner" size="40px" spin="true" fixed-width="true" class="ons-icon fa fa-spinner" style="font-size: 40px;"></ons-icon>
+    </ons-modal>
+    <ons-modal var="logoutModal" ng-controller="LogoutController" ng-click="logoutModal.hide()">
+        <div style="background: white">
+            <ons-button modifier="large--quiet" ng-click="logout()">Logout</ons-button>
         </div>
     </ons-modal>
-
 </div>
 
 
