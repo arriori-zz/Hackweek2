@@ -1,24 +1,85 @@
-﻿<ons-navigator var="quickRoomNavigator" ng-controller="QuickRoomController">
-    <ons-page >
-        <ons-toolbar>
-            <div class="center">Quick Room</div>
-        </ons-toolbar>
+﻿<div ng-controller="QuickRoomController">
+    <ons-navigator var="quickRoomNavigator">
+        <ons-page>
+            <ons-row>
+                <ons-col size="70%">
+                    <div style=" margin-top: 10px; margin-left: 10px; color: dimgrey" ng-click="changeLocation()">
+                        <div style="display: inline-block;  font-size: 16px;">{{selectedLocation.Name}}</div>
+                        <ons-icon icon="ion-arrow-down-b" style="display: inline-block; font-size: 12px"></ons-icon>
+                    </div>
 
-        <ons-list >
-            <ons-list-item modifier="chevron" class="item" ng-repeat="item in items" ng-click="showDetail($index)">
-                <ons-row>
-                    <ons-col width="60px">
-                        <div class="item-thum"></div>
-                    </ons-col>
-                    <ons-col>
-                        <header>
-                            <span class="item-title">{{item.title}}</span>
-                            <span class="item-label">{{item.label}}</span>
-                        </header>
-                        <p class="item-desc">{{item.desc}}</p>
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-        </ons-list>
+                </ons-col>
+
+                <ons-col align="right">
+                    <ons-icon icon="ion-ios-person-outline" style="margin-top: 5px; margin-right:20px; color: gray; font-size: 30px;"></ons-icon>
+                </ons-col>
+
+            </ons-row>
+            <div ng-class="ng-hide" style="text-align: center" ng-show="booked == false">
+
+                <section style="padding: 8px; margin-top: 40px; font-size: 30px ">
+                    Search a room now
+                </section>
+
+                <section style="padding: 8px; margin-top: 10px;  ">
+                    <label class="checkbox">
+                        <input type="checkbox" ng-model="lifesize">
+                        <div class="checkbox__checkmark"></div>
+                        <span class="ons-checkbox-inner">With Lifesize</span>
+                    </label>
+                </section>
+                <section  style="padding: 8px; margin-top: 20px;"> 
+                    <ons-row>
+                        <ons-col align="right">
+                            <ons-icon icon="ion-minus-round" ng-click="removeMinutes()"></ons-icon>
+                        </ons-col>
+                        <ons-col style="font-size: 30px">
+                            {{time}} min.
+                        </ons-col>
+                        <ons-col align="left">
+                            <ons-icon icon="ion-plus-round"  ng-click="addMinutes()"></ons-icon>
+                        </ons-col>
+                    </ons-row>
+
+                </section>
+                <section style="padding: 0 8px 8px ;margin-top: 20px ">
+                    <ons-button modifier="outline" style="width: 100%" ng-click="bookRoom()">Book any available</ons-button>
+                </section>
+
+            </div>
+            <div  ng-class="ng-hide" style="text-align: center" ng-show="booked == true">
+                <ons-icon icon="ion-ios-checkmark-outline" style="font-size: 130px; color:green; margin-top: 100px;"></ons-icon>
+                <div style="font-size: 30px;">{{bookedRoom}}</div>
+                <div style="font-size: 14px;">You have this room until <b>{{bookedTimeEnd}}</b></div>
+                <ons-button style="margin-top: 40px"  modifier="quiet" >Room Details</ons-button>
+            </div>
     </ons-page>
-</ons-navigator>
+    </ons-navigator>
+    <ons-modal var="locationModal" ng-controller="LocationController">
+        <div class="center" style="background: white; color:black">Select Location</div>
+        <ons-list>
+            <ons-list-item ng-repeat="location in locations" modifier="tappable" ng-click="selectLocation(location)">{{location.Name}}</ons-list-item>
+        </ons-list>
+    </ons-modal>
+    <ons-modal var="noRoomModal" ng-controller="NoRoomController" >
+        <div style="width: 90%;background: white; color:black; padding: 8px; margin-left:3%">
+            <ons-toolbar inline>
+                <div class="center">
+                    No room available now
+                </div>
+            </ons-toolbar>
+            <div style="text-align: center;background: white; color:black;">
+                <p>The next room available is:</p>
+                <p>{{$parent.nextRoom}}</p>
+                <p>at {{$parent.nextRoomTime}}</p>
+                <p>Do you want to book it?</p>
+                <ons-button modifier="outline" style="width: 45%" ng-click="no()">No</ons-button>
+                <ons-button style="width: 45%" ng-click="yes()">Yes</ons-button>
+            </div>
+        </div>
+    </ons-modal>
+
+</div>
+
+
+

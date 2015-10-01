@@ -111,4 +111,5 @@
   <preference name="ShowTitle" value="True" />
   <preference name="InAppBrowserStorageEnabled" value="False" />
   <preference name="SuppressesIncrementalRendering" value="True" />
+  <vs:plugin name="com.unarin.cordova.beacon" version="3.3.0" src="https://github.com/petermetz/cordova-plugin-ibeacon.git" />
 </widget>
