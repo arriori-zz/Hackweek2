@@ -2,14 +2,9 @@
 
     ons.ready(function () {
 
-        if ($localStorage.credentials) {
-
-            if ($localStorage.token) {
-                $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.token;
-            }
-
+        if (($localStorage.credentials) && ($localStorage.token)) {
+            $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.token;
             $scope.showPage("quickRoom");
-
         }
         else {
             $scope.loginmodal.show();

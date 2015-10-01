@@ -123,7 +123,7 @@ module.factory('$data', function ($http, $q, $localStorage) {
       data.addMinutes = function (roomId, minutes) {
           var deferred = $q.defer();
 
-          $http.post(serverUrl + "/api/exchange/addMinutes/" + roomId, minutes)
+          $http.post(serverUrl + "/api/exchange/addMinutes/" + roomId + "/" + minutes)
            .success(function (response) {
                deferred.resolve(response);
            }).error(function () {

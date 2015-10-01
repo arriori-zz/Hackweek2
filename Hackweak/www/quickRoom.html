@@ -51,7 +51,7 @@
                 <ons-icon icon="ion-ios-checkmark-outline" style="font-size: 130px; color:green; margin-top: 100px;"></ons-icon>
                 <div style="font-size: 30px;">{{bookedRoom}}</div>
                 <div style="font-size: 14px;">You have this room until <b>{{bookedTimeEnd}}</b></div>
-                <ons-button style="margin-top: 40px"  modifier="quiet" >Room Details</ons-button>
+                <ons-button style="margin-top: 40px"  modifier="quiet" ng-click="details()">Room Details</ons-button>
             </div>
             <div ng-class="ng-hide" style="text-align: center" ng-show="state == 'notBooked'">
                 <ons-icon icon="ion-thumbsdown" style="font-size: 130px; color:red; margin-top: 100px;"></ons-icon>
