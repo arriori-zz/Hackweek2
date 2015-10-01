@@ -4,13 +4,13 @@
         <div class="left"><ons-back-button>Back</ons-back-button></div>
         <div class="center">Room Details</div>
     </ons-toolbar>
-    <section>
-        <p>{{roomName}}</p>
-        <p>{{begins}} - {{ends}}</p>
+    <section style="text-align: center">
+        <p style="font-size:30px">{{roomName}}</p>
+        <p>Start: {{begins}} - End: {{ends}}</p>
     </section>
     <section>
-        <ons-button modifier="large" class="login-button" ng-click="freeRoom()">Free this room</ons-button>
-        <ons-button modifier="large-cta" class="login-button" ng-click="addMinutes()">Add 15 minutes</ons-button>
+        <ons-button modifier="outline" style="width: 90%; margin-left:5%;  margin-top: 30px"  ng-click="freeRoom()" >Free this room</ons-button>
+        <ons-button modifier="outline" style="width: 90%;margin-left:5%; margin-top: 30px" ng-click="addMinutes()" >Add 15 minutes</ons-button>
     </section>
 
 </ons-page>

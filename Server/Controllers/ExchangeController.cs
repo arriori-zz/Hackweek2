@@ -72,7 +72,7 @@ namespace Server.Controllers
         {
         }
 
-        [Route("api/exchange/addMinutes/{roomId}")]
+        [Route("api/exchange/addMinutes/{roomId}/{minutes}")]
         [HttpPost]
         public void addMinutes(int roomId, int minutes)
         {

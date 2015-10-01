@@ -61,7 +61,7 @@
         });
     }
 
-    $scope.dontBook = function(){
+    $scope.dontBook = function() {
         $scope.state = 'registering';
     }
 
@@ -73,12 +73,18 @@
                 $scope.bookedRoom = result.Room.Name;
 
                 $scope.bookedTimeEnd = $scope.getTime(result.End);
+                $data.roomId = result.Room.Id;
                 $scope.state = 'booked';
             }
             else {
                 alert("Ouch! somone just took the room.");
             }
         })
+    }
+
+    $scope.details = function () {
+
+        $scope.quickRoomNavigator.pushPage('detail.html');
     }
 
     $scope.logoutClick = function () {
