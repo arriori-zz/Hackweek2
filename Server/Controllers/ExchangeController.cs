@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
+using System.Threading;
 using System.Web.Http;
 
 namespace Server.Controllers
@@ -38,7 +39,8 @@ namespace Server.Controllers
         [HttpPost]
         public IHttpActionResult BookRoom(BookRoomParam param)
         {
-          
+            Thread.Sleep(2000);
+
             // If there is room available
             var bookResult = new BookResult() { Booked = true, Room = rooms[0], Start = DateTime.Now, End = DateTime.Now.AddMinutes(param.Time)};
 
@@ -51,6 +53,7 @@ namespace Server.Controllers
         public IHttpActionResult BookThisRoom(BookResult book)
         {
             book.Booked = true;
+            Thread.Sleep(2000);
 
             return Ok(book);
         }
@@ -59,9 +62,22 @@ namespace Server.Controllers
         [HttpGet]
         public IEnumerable<Room> GetRoomsForLocation(int locationId)
         {
+            Thread.Sleep(2000);
             return rooms.Where(r => r.LocationId == locationId);
         }
-        
+
+        [Route("api/exchange/freeThisRoom/{roomId}")]
+        [HttpPost]
+        public void FreeThisRoom(int roomId)
+        {
+        }
+
+        [Route("api/exchange/addMinutes/{roomId}")]
+        [HttpPost]
+        public void addMinutes(int roomId, int minutes)
+        {
+        }
+
         [Route("api/exchange/getlocations")]
         [HttpGet]
         public IEnumerable<Location> GetLocations()

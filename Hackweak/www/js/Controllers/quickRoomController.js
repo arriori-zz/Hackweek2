@@ -40,7 +40,11 @@
     };
 
     $scope.bookRoom = function () {
+        $scope.$parent.startLoading();
+
         $data.bookRoom($scope.lifesize, $scope.time).then(function (result) {
+            $scope.$parent.endLoading();
+
             if (result.Booked) {
                 $scope.bookedRoom = result.Room.Name;
 
@@ -53,7 +57,6 @@
                 $scope.nextRoomTime = $scope.getTime(result.Start);
                 $scope.possibleBook = result;
                 $scope.state = 'notBooked';
-                
             }
         });
     }
@@ -63,8 +66,9 @@
     }
 
     $scope.pleaseBook = function () {
-
+        $scope.$parent.startLoading();
         $data.bookThisRoom($scope.possibleBook).then(function (result) {
+            $scope.$parent.endLoading();
             if (result.Booked) {
                 $scope.bookedRoom = result.Room.Name;
 

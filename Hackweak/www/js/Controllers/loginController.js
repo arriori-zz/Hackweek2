@@ -7,7 +7,10 @@
 
         if ($scope.data && $scope.data.username && $scope.data.password)
         {
+            $scope.$parent.startLoading();
+
             $data.login($scope.data.username, $scope.data.password).then(function (result) {
+                $scope.$parent.endLoading();
                 if (result) {
                     $scope.$parent.closeLoginModal();
                 }

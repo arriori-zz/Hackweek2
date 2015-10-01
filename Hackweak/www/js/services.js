@@ -107,6 +107,32 @@ module.factory('$data', function ($http, $q, $localStorage) {
           return deferred.promise;
       }
 
+      data.freeRoom = function (roomId) {
+          var deferred = $q.defer();
+
+          $http.post(serverUrl + "/api/exchange/freeThisRoom/" + roomId)
+           .success(function (response) {
+               deferred.resolve(response);
+           }).error(function () {
+               deferred.reject();
+           });
+
+          return deferred.promise;
+      }
+
+      data.addMinutes = function (roomId, minutes) {
+          var deferred = $q.defer();
+
+          $http.post(serverUrl + "/api/exchange/addMinutes/" + roomId, minutes)
+           .success(function (response) {
+               deferred.resolve(response);
+           }).error(function () {
+               deferred.reject();
+           });
+
+          return deferred.promise;
+      }
+
       return data;
  });
 

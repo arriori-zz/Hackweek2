@@ -1,29 +1,9 @@
-﻿<ons-navigator var="RoomsNavigator">
-    <ons-page ng-controller="RoomsController">
-        <ons-row>
-            <ons-col size="70%">
-                <div style=" margin-top: 10px; margin-left: 10px; color: dimgrey" ng-click="changeLocation()">
-                    <div style="display: inline-block;  font-size: 16px;">{{selectedLocation.Name}}</div>
-                    <ons-icon icon="ion-arrow-down-b" style="display: inline-block; font-size: 12px"></ons-icon>
-                </div>
+﻿<ons-navigator var="RoomsNavigator" ng-controller="RoomsController">
+    <ons-page>
+        <ons-toolbar>
+            <div class="center">Rooms</div>
+        </ons-toolbar>
 
-            </ons-col>
 
-            <ons-col align="right">
-                <ons-icon icon="ion-ios-person-outline" style="margin-top: 5px; margin-right:20px; color: gray; font-size: 30px;"></ons-icon>
-            </ons-col>
-
-        </ons-row>
-        <ons-list style="margin-top: 30px">
-            <ons-list-item ng-repeat="room in rooms" modifier="chevron" ng-click="selectRoom(room)">
-                <ons-row>
-                    <ons-col size="50px"><ons-icon icon="ion-ios-calendar-outline"></ons-icon></ons-col>
-                    <ons-col>
-                        {{room.Name}} - Available until 
-                    </ons-col>
-                </ons-row>
-            </ons-list-item>
-        </ons-list>
-       
     </ons-page>
 </ons-navigator>

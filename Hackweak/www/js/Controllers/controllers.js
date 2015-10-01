@@ -22,6 +22,14 @@
         $scope.showPage("quickRoom");
     };
 
+    $scope.startLoading = function () {
+        $scope.loadingmodal.show();
+    }
+
+    $scope.endLoading = function () {
+        $scope.loadingmodal.hide();
+    }
+
     $scope.showPage = function (pageName) {
         $scope.tabbar.loadPage(pageName + '.html');
     };

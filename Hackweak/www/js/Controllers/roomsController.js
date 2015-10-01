@@ -1,16 +1,6 @@
 ﻿module.controller('RoomsController', function ($scope, $data, $http) {
 
-    $scope.selectedLocation = $data.selectedLocation;
-    $scope.rooms = $data.rooms;
-    $scope.lifesize = false;
-
-    $scope.changeLocation = function () {
-        $scope.locationModal.show();
-    }
-
-    $scope.selectRoom = function (room) {
-
-    }
+   
 });
 
 
