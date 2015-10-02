@@ -17,9 +17,9 @@
                 </ons-col>
 
             </ons-row>
-            <div ng-class="ng-hide" g-show="state == 'registering'">
+            <div ng-class="ng-hide" ng-show="state == 'registering'">
                 <section class="section-search-room-banner">
-                    Search a room now
+                    Book your room
                 </section>
 
                 <section class="check-lifesize">
@@ -34,8 +34,8 @@
                         <ons-col align="right">
                             <ons-icon icon="ion-minus-round" ng-click="removeMinutes()"></ons-icon>
                         </ons-col>
-                        <ons-col style="font-size: 30px">
-                            {{time}} min.
+                        <ons-col align="center" style="font-size: 30px">
+                            <div style="text-align: center">{{time}} min.</div>  
                         </ons-col>
                         <ons-col align="left">
                             <ons-icon icon="ion-plus-round"  ng-click="addMinutes()"></ons-icon>
@@ -44,7 +44,7 @@
 
                 </section>
                 <section style="padding: 0 8px 8px ;margin-top: 20px ">
-                    <ons-button modifier="outline" style="width: 100%; " ng-click="bookRoom()">Book any available</ons-button>
+                    <ons-button modifier="large" class="login-button"  ng-click="bookRoom()">Book any available</ons-button>
                 </section>
 
                 <section ng-class="ng-hide" style="padding: 10px" ng-show="$parent.room != ''">
@@ -56,8 +56,8 @@
                 <div style="font-size: 30px;">{{bookedRoom.Room.Name}}</div>
                 <div style="font-size: 14px;">You have this room until <b>{{bookedTimeEnd}}</b></div>
                 <section style=" margin-top: 60px;">
-                    <ons-button modifier="outline" style="width: 90%;" ng-click="freeRoom()">Free this room</ons-button>
-                    <ons-button modifier="outline" style="width: 90%; margin-top: 30px;" ng-click="updateMeeting()">Add 15 minutes</ons-button>
+                    <ons-button  modifier="large" class="login-button" style="width: 90%;" ng-click="freeRoom()">Free this room</ons-button>
+                    <ons-button  modifier="large" class="login-button" style="width: 90%; margin-top: 30px;" ng-click="updateMeeting()">Add 15 minutes</ons-button>
                 </section>
             </div>
             <div ng-class="ng-hide" style="text-align: center" ng-show="state == 'notBooked'">
