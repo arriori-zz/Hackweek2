@@ -25,9 +25,9 @@ namespace Server.Controllers
 
         Location[] locations = new Location[]
         {
-            new Location {Id = 1, Name = "Montevideo, UY"},
-            new Location {Id = 2,  Name = "Cranbury, US" },
-            new Location {Id = 3,  Name = "Sofia, BG"}
+            new Location {Id = 1, Name = "Montevideo, UY", InternalNames = new [] { "Montevideo, Uruguay", "Montevideo"} },
+            new Location {Id = 2,  Name = "Cranbury, US", InternalNames = new [] {"Cranbury, NJ", "Cranbury" } },
+            new Location {Id = 3,  Name = "Sofia, BG", InternalNames = new [] { "Sofia, Bulgaria", "Sofia" } }
         };
 
         [Route("api/exchange/login")]
@@ -44,13 +44,14 @@ namespace Server.Controllers
         {
             var context = GetExchangeContext();
 
-            var rooms = ExchangeService.GetRooms(context).Where(r => r.Location == "Montevideo, Uruguay" || r.Location == "Montevideo");
+            var locationPossibleNames = locations.FirstOrDefault(l => l.Id == param.LocationId).InternalNames;
 
-            if (param.LifeSize)
+            var rooms = ExchangeService.GetRooms(context).Where(r => locationPossibleNames.Contains(r.Location));
+
+            if (param.LifeSize && param.LocationId == 1)
             {
                 rooms = rooms.Where(r => !r.Name.Contains("No Lifesize") && !r.Name.Contains("Huddle"));
             }
-
 
             var preferedRoomName = GetPreferedRoomName(param.PreferedRoom);
             if (!string.IsNullOrEmpty(preferedRoomName))
@@ -265,6 +266,8 @@ namespace Server.Controllers
         public int Time { get; set; }
 
         public string PreferedRoom { get; set; }
+
+        public int LocationId { get; set; }
     }
 
     public class LoginResult

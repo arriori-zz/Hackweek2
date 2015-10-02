@@ -12,5 +12,10 @@ namespace Server.Model
         public string Location { get; set; }
         public string Id { get; set; }
         public string EmailAddress { get; set; }
+
+        public override string ToString()
+        {
+            return Location;
+        }
     }
 }

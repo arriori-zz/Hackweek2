@@ -1,5 +1,5 @@
-﻿var serverUrl = "http://localhost:26573";
-//var serverUrl = "http://ighackweek.azurewebsites.net/";
+﻿// var serverUrl = "http://localhost:26573";
+var serverUrl = "http://ighackweek.azurewebsites.net/";
 
 module.factory('$data', function ($http, $q, $localStorage) {
 
@@ -77,13 +77,14 @@ module.factory('$data', function ($http, $q, $localStorage) {
           return deferred.promise;
       }
 
-      data.bookRoom = function (lifesize, time, roomId) {
+      data.bookRoom = function (lifesize, time, roomId, locationId) {
           var deferred = $q.defer();
 
           var param = {
               Lifesize: lifesize,
               Time: time,
-              PreferedRoom: roomId
+              PreferedRoom: roomId,
+              LocationId: locationId
           }
 
           $http.post(serverUrl + "/api/exchange/bookRoom", param)

@@ -54,7 +54,7 @@
     $scope.bookRoom = function () {
         $scope.$parent.startLoading();
 
-        $data.bookRoom($scope.lifesize, $scope.time, $scope.$parent.beaconId).then(function (result) {
+        $data.bookRoom($scope.lifesize, $scope.time, $scope.$parent.beaconId, $scope.selectedLocation.Id).then(function (result) {
             $scope.$parent.endLoading();
 
             if (result.Booked) {
