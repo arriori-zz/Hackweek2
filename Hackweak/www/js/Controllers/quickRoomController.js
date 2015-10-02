@@ -42,7 +42,7 @@
 
         var parts = datetime.split('T')[1].split(':');
 
-        var hours = parts[0];
+        var hours = parts[0] - 3;
         var minutes = parts[1];
 
         return hours + ":" + minutes;
@@ -101,7 +101,7 @@
         });
     }
 
-    $scope.addMinutes = function () {
+    $scope.updateMeeting = function () {
 
         $scope.$parent.startLoading();
         $data.addMinutes($scope.bookedRoom.Room.Id, $scope.bookedRoom, 15).then(function (result) {
@@ -147,6 +147,7 @@ module.controller('LogoutController', function ($scope, $data, $localStorage) {
 
      $localStorage.credentials = null;
      $localStorage.token = null;
+     $localStorage.bookedRoom = null;
      $scope.$parent.$parent.openLoginModal();
     }
 

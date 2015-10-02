@@ -47,6 +47,9 @@
                     <ons-button modifier="outline" style="width: 100%; " ng-click="bookRoom()">Book any available</ons-button>
                 </section>
 
+                <section ng-class="ng-hide" style="padding: 10px" ng-show="$parent.room != ''">
+                    The nearest room is {{$parent.room}}
+                </section>
             </div>
             <div  ng-class="ng-hide" style="text-align: center" ng-show="state == 'booked'">
                 <ons-icon icon="ion-ios-checkmark-outline" style="font-size: 130px; color:green; margin-top: 50px;"></ons-icon>
@@ -54,7 +57,7 @@
                 <div style="font-size: 14px;">You have this room until <b>{{bookedTimeEnd}}</b></div>
                 <section style=" margin-top: 60px;">
                     <ons-button modifier="outline" style="width: 90%;" ng-click="freeRoom()">Free this room</ons-button>
-                    <ons-button modifier="outline" style="width: 90%; margin-top: 30px;" ng-click="addMinutes()">Add 15 minutes</ons-button>
+                    <ons-button modifier="outline" style="width: 90%; margin-top: 30px;" ng-click="updateMeeting()">Add 15 minutes</ons-button>
                 </section>
             </div>
             <div ng-class="ng-hide" style="text-align: center" ng-show="state == 'notBooked'">

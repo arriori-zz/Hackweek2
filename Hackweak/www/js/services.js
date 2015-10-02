@@ -1,5 +1,5 @@
-﻿var serverUrl = "http://localhost:26573";
-//var serverUrl = "http://ighackweek.azurewebsites.net/";
+﻿//var serverUrl = "http://localhost:26573";
+var serverUrl = "http://ighackweek.azurewebsites.net/";
 
 module.factory('$data', function ($http, $q, $localStorage) {
 
