@@ -8,10 +8,11 @@
         else {
             $scope.loginmodal.show();
 
-            setTimeout(function () {
-                $scope.initBeaconMonitoring();
-            }, 500);
         }
+        setTimeout(function () {
+            console.log("Initializing beacons");
+            $scope.initBeaconMonitoring();
+        }, 500);
     });
 
     $scope.closeLoginModal = function () {
@@ -59,10 +60,51 @@
         };
 
         delegate.didRangeBeaconsInRegion = function (pluginResult) {
-            $scope.text += '[DOM] didRangeBeaconsInRegion: ' + JSON.stringify(pluginResult);
+            if (pluginResult.beacons.length > 0) {
+                var nearestBeacon = null;
+                var bestDistance = 1000000;
+                for (var b = 0; b < pluginResult.beacons.length; b++) {
+                    var beacon = pluginResult.beacons[b];
+                    if (beacon.accuracy < bestDistance) {
+                        bestDistance = beacon.accuracy;
+                        nearestBeacon = beacon;
+                    }
+                }
+                var minor = nearestBeacon.minor;
+                var room = "";
+                if (minor == "54480") {
+                    room = "B";
+                } else if (minor == "54481") {
+                    room = "C";
+                } else if (minor == "54483") {
+                    room = "A";
+                } else if (minor == "54484") {
+                    room = "D";
+                }
+                if (room != "") {
+                    if ($scope.room != room) {
+                        console.log("You entered ROOM " + room);
+                        $scope.room = room;
+                        $scope.$apply();
+                    }
+                    $scope.foundRoomTime = new Date();
+                }
+            } else {
+                if ($scope.room != "") {
+                    var now = new Date();
+                    if (now.getTime() - $scope.foundRoomTime.getTime() > 60000) {
+                        console.log("You're not in a room");
+                        $scope.room = "";
+                        $scope.$apply();
+                    }
+                }
+            }
+//            $scope.text += '[DOM] didRangeBeaconsInRegion: ' + JSON.stringify(pluginResult);
         };
 
+        $scope.room = "";
         var region = $scope.createBeacon();
+        console.log("Region created");
 
         cordova.plugins.locationManager.setDelegate(delegate);
 

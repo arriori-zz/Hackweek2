@@ -46,6 +46,9 @@
                     <ons-button modifier="outline" style="width: 100%; " ng-click="bookRoom()">Book any available</ons-button>
                 </section>
 
+                <section ng-class="ng-hide" style="padding: 10px" ng-show="$parent.room != ''">
+                    The nearest room is {{$parent.room}}
+                </section>
             </div>
             <div  ng-class="ng-hide" style="text-align: center" ng-show="state == 'booked'">
                 <ons-icon icon="ion-ios-checkmark-outline" style="font-size: 130px; color:green; margin-top: 50px;"></ons-icon>
