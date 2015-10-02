@@ -147,6 +147,7 @@ module.controller('LogoutController', function ($scope, $data, $localStorage) {
 
      $localStorage.credentials = null;
      $localStorage.token = null;
+     $localStorage.bookedRoom = null;
      $scope.$parent.$parent.openLoginModal();
     }
 
