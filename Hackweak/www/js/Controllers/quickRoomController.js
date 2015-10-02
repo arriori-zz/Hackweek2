@@ -101,7 +101,7 @@
         });
     }
 
-    $scope.addMinutes = function () {
+    $scope.updateMeeting = function () {
 
         $scope.$parent.startLoading();
         $data.addMinutes($scope.bookedRoom.Room.Id, $scope.bookedRoom, 15).then(function (result) {
