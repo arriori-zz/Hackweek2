@@ -1,6 +1,6 @@
 ﻿module.controller('AppController', function ($scope, $data, $localStorage, $http) {
 
-    ons.ready(function () {
+       ons.ready(function () {
         if (($localStorage.credentials) && ($localStorage.token)) {
             $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.token;
             $scope.showPage("quickRoom");
@@ -106,6 +106,7 @@
 
         $scope.room = "";
         $scope.beaconId = "";
+
         var region = $scope.createBeacon();
         console.log("Region created");
 

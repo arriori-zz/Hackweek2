@@ -23,8 +23,8 @@
 
                 <section style="padding: 8px; margin-top: 10px;  ">
                     <label class="checkbox">
-                        <input type="checkbox" ng-model="lifesize">
-                        <div class="checkbox__checkmark"></div>
+                        <input type="checkbox" ng-checked="lifesize == true" ng-click="updateLifesize(lifesize)">
+                        <div class="checkbox__checkmark" ></div>
                         <span class="ons-checkbox-inner">With Lifesize</span>
                     </label>
                 </section>

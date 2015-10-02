@@ -13,7 +13,6 @@
             $scope.state = 'registering';
         }
         
-
         $data.getLocations().then(function (result) {
             $scope.selectedLocation = result[0];
         });
@@ -31,6 +30,10 @@
     $scope.addMinutes = function () {
         $scope.time += 15;
     };
+
+    $scope.updateLifesize = function (lifesize) {
+        $scope.lifesize = !lifesize;
+    }
 
     $scope.removeMinutes = function () {
         if ($scope.time > 15) {
@@ -51,7 +54,7 @@
     $scope.bookRoom = function () {
         $scope.$parent.startLoading();
 
-        $data.bookRoom($scope.lifesize, $scope.time).then(function (result) {
+        $data.bookRoom($scope.lifesize, $scope.time, $scope.$parent.beaconId).then(function (result) {
             $scope.$parent.endLoading();
 
             if (result.Booked) {
@@ -93,12 +96,20 @@
 
     $scope.freeRoom = function () {
         $scope.$parent.startLoading();
-        $data.freeRoom($scope.bookedRoom.Room.Id, $scope.bookedRoom).then(function (result) {
+        try{
+            $data.freeRoom($scope.bookedRoom.Room.Id, $scope.bookedRoom).then(function (result) {
+                $scope.$parent.endLoading();
+                $localStorage.bookedRoom = null;
+                $scope.state = 'registering';
+
+            });
+        } 
+        catch(result)
+        {
             $scope.$parent.endLoading();
             $localStorage.bookedRoom = null;
             $scope.state = 'registering';
-
-        });
+        }
     }
 
     $scope.updateMeeting = function () {
