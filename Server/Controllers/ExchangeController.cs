@@ -43,10 +43,10 @@ namespace Server.Controllers
         public IHttpActionResult BookRoom(BookRoomParam param)
         {
             var context = GetExchangeContext();
-            var rooms = ExchangeService.GetRooms(context).Where(r => r.Location == "Montevideo, Uruguay" || r.Location == "Montevideo");
+            var rooms = ExchangeService.GetRooms(context);//.Where(r => r.Location == "Montevideo, Uruguay" || r.Location == "Montevideo");
 
-            if (param.LifeSize)
-                rooms = rooms.Where(r => !r.Name.Contains("No Lifesize") && !r.Name.Contains("Huddle"));
+            //if (param.LifeSize)
+            //    rooms = rooms.Where(r => !r.Name.Contains("No Lifesize") && !r.Name.Contains("Huddle"));
 
             var freeRoom = AvailableNow(ExchangeService, context, rooms, param.Time);
 
