@@ -43,18 +43,21 @@
 
                 </section>
                 <section style="padding: 0 8px 8px ;margin-top: 20px ">
-                    <ons-button modifier="outline" style="width: 100%" ng-click="bookRoom()">Book any available</ons-button>
+                    <ons-button modifier="outline" style="width: 100%; " ng-click="bookRoom()">Book any available</ons-button>
                 </section>
 
             </div>
             <div  ng-class="ng-hide" style="text-align: center" ng-show="state == 'booked'">
-                <ons-icon icon="ion-ios-checkmark-outline" style="font-size: 130px; color:green; margin-top: 100px;"></ons-icon>
-                <div style="font-size: 30px;">{{bookedRoom}}</div>
+                <ons-icon icon="ion-ios-checkmark-outline" style="font-size: 130px; color:green; margin-top: 50px;"></ons-icon>
+                <div style="font-size: 30px;">{{bookedRoom.Room.Name}}</div>
                 <div style="font-size: 14px;">You have this room until <b>{{bookedTimeEnd}}</b></div>
-                <ons-button style="margin-top: 40px"  modifier="quiet" ng-click="details()">Room Details</ons-button>
+                <section style=" margin-top: 60px;">
+                    <ons-button modifier="outline" style="width: 90%;" ng-click="freeRoom()">Free this room</ons-button>
+                    <ons-button modifier="outline" style="width: 90%; margin-top: 30px;" ng-click="addMinutes()">Add 15 minutes</ons-button>
+                </section>
             </div>
             <div ng-class="ng-hide" style="text-align: center" ng-show="state == 'notBooked'">
-                <ons-icon icon="ion-thumbsdown" style="font-size: 130px; color:red; margin-top: 100px;"></ons-icon>
+                <ons-icon icon="ion-ios-close-outline" style="font-size: 130px; color:red; margin-top: 100px;"></ons-icon>
                 <div style="text-align: center;background: white; color:black;">
                     <p>  No room available now</p>
                     <p>The next room available is:</p>

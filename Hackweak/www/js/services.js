@@ -1,4 +1,5 @@
 ﻿var serverUrl = "http://localhost:26573";
+//var serverUrl = "http://ighackweek.azurewebsites.net/";
 
 module.factory('$data', function ($http, $q, $localStorage) {
 
@@ -107,10 +108,10 @@ module.factory('$data', function ($http, $q, $localStorage) {
           return deferred.promise;
       }
 
-      data.freeRoom = function (roomId) {
+      data.freeRoom = function (roomId, room) {
           var deferred = $q.defer();
 
-          $http.post(serverUrl + "/api/exchange/freeThisRoom/" + roomId)
+          $http.post(serverUrl + "/api/exchange/freeThisRoom/" + roomId, room)
            .success(function (response) {
                deferred.resolve(response);
            }).error(function () {
@@ -120,10 +121,10 @@ module.factory('$data', function ($http, $q, $localStorage) {
           return deferred.promise;
       }
 
-      data.addMinutes = function (roomId, minutes) {
+      data.addMinutes = function (roomId,room, minutes) {
           var deferred = $q.defer();
 
-          $http.post(serverUrl + "/api/exchange/addMinutes/" + roomId + "/" + minutes)
+          $http.post(serverUrl + "/api/exchange/addMinutes/" + roomId + "/" + minutes, room)
            .success(function (response) {
                deferred.resolve(response);
            }).error(function () {

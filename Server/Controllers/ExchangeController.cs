@@ -1,4 +1,5 @@
-﻿using Server.HackTestWPF;
+﻿using HackTestWPF;
+using Server.HackTestWPF;
 using Server.Model;
 using System;
 using System.Collections.Generic;
@@ -13,19 +14,20 @@ namespace Server.Controllers
    [Authorize]
     public class ExchangeController : ApiController
     {
+        public HackExchangeService ExchangeService
+        {
+            get
+            {
+                return new HackExchangeService();
+            }
+        }
+
+
         Location[] locations = new Location[]
         {
             new Location {Id = 1, Name = "Montevideo, UY"},
             new Location {Id = 2,  Name = "Cranbury, US" },
             new Location {Id = 3,  Name = "Sofia, BG"}
-        };
-
-        Room[] rooms = new Room[]
-        {
-            new Room {Id = "1", Name = "Mon A", Location= "1"},
-            new Room {Id = "2",  Name = "Mon B", Location= "1" },
-            new Room {Id = "3",  Name = "Mon C (No lifesize)", Location= "1"},
-            new Room {Id = "4",  Name = "Mon D (No lifesize)", Location= "1"}
         };
 
         [Route("api/exchange/login")]
@@ -40,26 +42,85 @@ namespace Server.Controllers
         [HttpPost]
         public IHttpActionResult BookRoom(BookRoomParam param)
         {
-            var credentials = GetLoginCredentials();
-            var service = new HackExchangeService();
-            HackExchangeContext context = new HackExchangeContext()
-            {
-                Credentials = new NetworkCredential(credentials.UserName, credentials.Password),
-                Endpoint = credentials.Endpoint
-            };
-            var rooms = service.GetRooms(context).Where(r => r.Location == "Montevideo, Uruguay" || r.Location == "Montevideo");
+            var context = GetExchangeContext();
+            var rooms = ExchangeService.GetRooms(context).Where(r => r.Location == "Montevideo, Uruguay" || r.Location == "Montevideo");
 
-            var freeRoom = AvailableNow(service, context, rooms, param.Time);
+            var freeRoom = AvailableNow(ExchangeService, context, rooms, param.Time);
 
             if (freeRoom.Booked)
             {
-                service.CreateAppointment(context, "Meeting", "Meeting scheduled through the new astonishing app", freeRoom.Start, freeRoom.End, freeRoom.Room, new List<string> { User.Identity.Name });
+               var calendarItem = ExchangeService.CreateAppointment(context, "Your meeting - by MeetMeNow", "Meeting scheduled through a new astonishing app", freeRoom.Start, freeRoom.End, freeRoom.Room, new List<string> { User.Identity.Name });
+               freeRoom.CalendarItem = calendarItem;
             }
 
             return Ok(freeRoom);
         }
 
-        public BookResult AvailableNow(HackExchangeService service, HackExchangeContext context, IEnumerable<Room> rooms, int minutes)
+        [Route("api/exchange/bookThisRoom")]
+        [HttpPost]
+        public IHttpActionResult BookThisRoom(BookResult book)
+        {
+            var context = GetExchangeContext();
+
+            var calendarItem = ExchangeService.CreateAppointment(context, "Meeting", "Meeting scheduled through the new astonishing app", book.Start, book.End, book.Room, new List<string> { User.Identity.Name });
+            book.Booked = true;
+            book.CalendarItem = calendarItem;
+
+            return Ok(book);
+        }
+
+        [Route("api/exchange/freeThisRoom/{roomId}")]
+        [HttpPost]
+        public void FreeThisRoom(string roomId, BookResult book)
+        {
+            var context = GetExchangeContext();
+            ExchangeService.CancelAppointment(context, book.CalendarItem);
+        }
+
+        [Route("api/exchange/addMinutes/{roomId}/{minutes}")]
+        [HttpPost]
+        public BookResult addMinutes(string roomId, int minutes, BookResult book)
+        {
+            // TODO: Hacer la llamada a Exchange Service
+
+            book.End = book.End.AddMinutes(minutes);
+            return book;
+        }
+
+        [Route("api/exchange/getlocations")]
+        [HttpGet]
+        public IEnumerable<Location> GetLocations()
+        {
+            return locations;
+        }
+
+        [Route("api/exchange/getrooms/{locationId}")]
+        [HttpGet]
+        public IEnumerable<Room> GetRoomsForLocation(string locationId)
+        {
+            //Thread.Sleep(2000);
+            //return rooms.Where(r => r.Location == locationId);
+            return new Room[0];
+        }
+
+        private HackExchangeContext GetExchangeContext()
+        {
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            var endpoint = claims.FirstOrDefault(c => c.Type == "Endpoint").Value;
+            var password = claims.FirstOrDefault(c => c.Type == "Password").Value;
+
+            var userName = User.Identity.Name;
+
+          
+
+            HackExchangeContext context = new HackExchangeContext() { Credentials = new NetworkCredential(userName, password), Endpoint = endpoint };
+
+            return context;
+        }
+
+        private BookResult AvailableNow(HackExchangeService service, HackExchangeContext context, IEnumerable<Room> rooms, int minutes)
         {
             int periodsNeeded = minutes / 15;
             var startingTime = DateTime.Now;
@@ -93,7 +154,7 @@ namespace Server.Controllers
                         if (startingTime == now)
                             return new BookResult() { Booked = true, Room = room, Start = startingTime, End = finallSlot.End };
                         else
-                            return new BookResult() { Booked = false, Room = room, Start = startingTime, End = finallSlot.End};
+                            return new BookResult() { Booked = false, Room = room, Start = startingTime, End = finallSlot.End };
                     }
 
 
@@ -103,7 +164,7 @@ namespace Server.Controllers
             return null;
         }
 
-        public bool IsFree(IEnumerable<Period> periods, Period start, int periodsNeeded)
+        private bool IsFree(IEnumerable<Period> periods, Period start, int periodsNeeded)
         {
             while (periodsNeeded >= 0)
             {
@@ -115,7 +176,7 @@ namespace Server.Controllers
             return true;
         }
 
-        public IEnumerable<Period> periodsOfDay()
+        private IEnumerable<Period> periodsOfDay()
         {
             var now = DateTime.Now;
             var today = new DateTime(now.Year, now.Month, now.Day, 00, 00, 00);
@@ -133,62 +194,6 @@ namespace Server.Controllers
             }
 
             return periods;
-        }
-
-        public IHttpActionResult BookThisRoom(BookResult book)
-        {
-            var credentials = GetLoginCredentials();
-            var service = new HackExchangeService();
-            HackExchangeContext context = new HackExchangeContext()
-            {
-                Credentials = new NetworkCredential(credentials.UserName, credentials.Password),
-                Endpoint = credentials.Endpoint
-            };
-            book.Booked = true;
-            service.CreateAppointment(context, "Meeting", "Meeting scheduled through the new astonishing app", book.Start, book.End, book.Room, new List<string> { User.Identity.Name });
-            return Ok(book);
-        }
-
-        [Route("api/exchange/getrooms/{locationId}")]
-        [HttpGet]
-        public IEnumerable<Room> GetRoomsForLocation(string locationId)
-        {
-            Thread.Sleep(2000);
-            return rooms.Where(r => r.Location == locationId);
-        }
-
-        [Route("api/exchange/freeThisRoom/{roomId}")]
-        [HttpPost]
-        public void FreeThisRoom(int roomId)
-        {
-        }
-
-        [Route("api/exchange/addMinutes/{roomId}/{minutes}")]
-        [HttpPost]
-        public void addMinutes(int roomId, int minutes)
-        {
-        }
-
-        [Route("api/exchange/getlocations")]
-        [HttpGet]
-        public IEnumerable<Location> GetLocations()
-        {
-            //var credentials = GetLoginCredentials();
-
-            return locations;
-        }
-
-        private LoginCredentials GetLoginCredentials()
-        {
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-
-            var endpoint = claims.FirstOrDefault(c => c.Type == "Endpoint").Value;
-            var password = claims.FirstOrDefault(c => c.Type == "Password").Value;
-
-            var userName = User.Identity.Name;
-
-            return new LoginCredentials() { Endpoint = endpoint, UserName = userName, Password = password };
         }
     }
 
@@ -215,6 +220,8 @@ namespace Server.Controllers
 
     public class BookResult
     {
+        public CalendarItem CalendarItem { get; set; }
+
         public bool Booked { get; set; }
 
         public Room Room { get; set; }

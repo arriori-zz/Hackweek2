@@ -1,9 +1,18 @@
-﻿module.controller('QuickRoomController', function ($scope, $data) {
+﻿module.controller('QuickRoomController', function ($scope, $data, $localStorage) {
 
     $scope.init = function () {
         $scope.lifesize = true;
         $scope.time = 30;
-        $scope.state = 'registering';
+
+        if ($localStorage.bookedRoom) {
+            $scope.bookedRoom = $localStorage.bookedRoom;
+            $scope.bookedTimeEnd = $scope.getTime($scope.bookedRoom.End);
+            $scope.state = 'booked';
+        }
+        else {
+            $scope.state = 'registering';
+        }
+        
 
         $data.getLocations().then(function (result) {
             $scope.selectedLocation = result[0];
@@ -46,8 +55,9 @@
             $scope.$parent.endLoading();
 
             if (result.Booked) {
-                $scope.bookedRoom = result.Room.Name;
 
+                $scope.bookedRoom = result;
+                $localStorage.bookedRoom = result;
                 $scope.bookedTimeEnd = $scope.getTime(result.End);
                 $scope.state = 'booked';
             }
@@ -70,27 +80,42 @@
         $data.bookThisRoom($scope.possibleBook).then(function (result) {
             $scope.$parent.endLoading();
             if (result.Booked) {
-                $scope.bookedRoom = result.Room.Name;
-
+                $scope.bookedRoom = result;
+                $localStorage.bookedRoom = result;
                 $scope.bookedTimeEnd = $scope.getTime(result.End);
-                $data.roomId = result.Room.Id;
                 $scope.state = 'booked';
             }
             else {
-                alert("Ouch! somone just took the room.");
+                alert("Ouch! someone just took the room.");
             }
         })
     }
 
-    $scope.details = function () {
+    $scope.freeRoom = function () {
+        $scope.$parent.startLoading();
+        $data.freeRoom($scope.bookedRoom.Room.Id, $scope.bookedRoom).then(function (result) {
+            $scope.$parent.endLoading();
+            $localStorage.bookedRoom = null;
+            $scope.state = 'registering';
 
-        $scope.quickRoomNavigator.pushPage('detail.html');
+        });
+    }
+
+    $scope.addMinutes = function () {
+
+        $scope.$parent.startLoading();
+        $data.addMinutes($scope.bookedRoom.Room.Id, $scope.bookedRoom, 15).then(function (result) {
+            $scope.$parent.endLoading();
+
+            $scope.bookedRoom = result;
+            $localStorage.bookedRoom = result;
+            $scope.bookedTimeEnd = $scope.getTime(result.End);
+        });
     }
 
     $scope.logoutClick = function () {
         $scope.logoutModal.show();
     }
-
 
     $scope.init();
 });
