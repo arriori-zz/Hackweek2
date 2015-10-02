@@ -45,7 +45,7 @@
 
         var parts = datetime.split('T')[1].split(':');
 
-        var hours = parts[0] - 3;
+        var hours = parts[0];
         var minutes = parts[1];
 
         return hours + ":" + minutes;

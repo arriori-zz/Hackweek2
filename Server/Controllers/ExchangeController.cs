@@ -73,7 +73,7 @@ namespace Server.Controllers
 
             var freeRoom = AvailableNow(ExchangeService, context, rooms, param.Time);
 
-            if (freeRoom.Booked)
+            if (freeRoom != null && freeRoom.Booked)
             {
                 var calendarItem = ExchangeService.CreateAppointment(context, "Your meeting - by MeetMeNow", "Meeting scheduled through a new astonishing app", freeRoom.Start, freeRoom.End, freeRoom.Room, new List<string> { User.Identity.Name });
                 freeRoom.CalendarItem = calendarItem;
@@ -154,9 +154,14 @@ namespace Server.Controllers
         private BookResult AvailableNow(HackExchangeService service, HackExchangeContext context, IEnumerable<Room> rooms, int minutes)
         {
             int periodsNeeded = minutes / 15;
+
             var startingTime = DateTime.UtcNow;
             var now = DateTime.UtcNow;
-            var today = new DateTime(now.Year, now.Month, now.Day, 00, 00, 00);
+
+            var startingTimeUY = DateTime.UtcNow.AddHours(-3);
+            var nowUY = DateTime.UtcNow.AddHours(-3);
+
+                        var today = new DateTime(now.Year, now.Month, now.Day, 00, 00, 00);
             var isFree = false;
 
             while (!isFree && today.Day == startingTime.Day)
@@ -176,8 +181,8 @@ namespace Server.Controllers
                             start = start.AddMinutes(15);
                         }
                     }
-                    var actualSlot = periods.FirstOrDefault(p => startingTime >= p.Start && startingTime <= p.End);
-                    var finallSlot = periods.FirstOrDefault(p => startingTime.AddMinutes(minutes) >= p.Start && startingTime.AddMinutes(minutes) <= p.End);
+                    var actualSlot = periods.FirstOrDefault(p => startingTimeUY >= p.Start && startingTimeUY <= p.End);
+                    var finallSlot = periods.FirstOrDefault(p => startingTimeUY.AddMinutes(minutes) >= p.Start && startingTimeUY.AddMinutes(minutes) <= p.End);
                     isFree = IsFree(periods, actualSlot, periodsNeeded);
 
                     if (isFree)
