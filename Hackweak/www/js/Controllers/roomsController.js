@@ -1,16 +1,15 @@
 ﻿module.controller('RoomsController', function ($scope, $data, $http) {
-
-   
-});
-
-
-/*$scope.items = $data.items;
+    $scope.init = function () {
+        $scope.showDetail(0);
+        $scope.text = 'Looking for beacons';
+    }
 
    $scope.showDetail = function (index) {
        var delegate = new cordova.plugins.locationManager.Delegate();
 
        delegate.didDetermineStateForRegion = function (pluginResult) {
-           $scope.text = '[DOM] didDetermineStateForRegion: ' + JSON.stringify(pluginResult);
+           $scope.text += '[DOM] didDetermineStateForRegion: ' + JSON.stringify(pluginResult);
+           $scope.$apply();
        };
 
        delegate.didStartMonitoringForRegion = function (pluginResult) {
@@ -18,8 +17,7 @@
        };
 
        delegate.didRangeBeaconsInRegion = function (pluginResult) {
-
-           $scope.text = '[DOM] didRangeBeaconsInRegion: ' + JSON.stringify(pluginResult);
+           $scope.text += '[DOM] didRangeBeaconsInRegion: ' + JSON.stringify(pluginResult);
        };
 
        var region = createBeacon();
@@ -33,10 +31,13 @@
        cordova.plugins.locationManager.startMonitoringForRegion(region)
            .fail(console.error)
            .done();
-      };*/
 
+       cordova.plugins.locationManager.startRangingBeaconsInRegion(region)
+            .fail(console.error)
+            .done();
 
-/*
+      };
+
 function createBeacon() {
 
     var uuid = 'FDA50693-A4E2-4FB1-AFCF-C6EB07647825'; // mandatory
@@ -48,5 +49,7 @@ function createBeacon() {
     var beaconRegion = new cordova.plugins.locationManager.BeaconRegion(identifier, uuid, major);
 
     return beaconRegion;
-}*/
+}
 
+    $scope.init();
+});
