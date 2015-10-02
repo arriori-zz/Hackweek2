@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace Server.Controllers
 {
-   [Authorize]
+    [Authorize]
     public class ExchangeController : ApiController
     {
         public HackExchangeService ExchangeService
@@ -34,7 +34,7 @@ namespace Server.Controllers
         [HttpPost]
         public IHttpActionResult Login(LoginCredentials credentials)
         {
-            var loginResult = new LoginResult() {   };
+            var loginResult = new LoginResult() { };
             return Ok(loginResult);
         }
 
@@ -43,17 +43,39 @@ namespace Server.Controllers
         public IHttpActionResult BookRoom(BookRoomParam param)
         {
             var context = GetExchangeContext();
-            var rooms = ExchangeService.GetRooms(context);//.Where(r => r.Location == "Montevideo, Uruguay" || r.Location == "Montevideo");
 
-            //if (param.LifeSize)
-            //    rooms = rooms.Where(r => !r.Name.Contains("No Lifesize") && !r.Name.Contains("Huddle"));
+            var rooms = ExchangeService.GetRooms(context).Where(r => r.Location == "Montevideo, Uruguay" || r.Location == "Montevideo");
+
+            if (param.LifeSize)
+            {
+                rooms = rooms.Where(r => !r.Name.Contains("No Lifesize") && !r.Name.Contains("Huddle"));
+            }
+
+
+            var preferedRoomName = GetPreferedRoomName(param.PreferedRoom);
+            if (!string.IsNullOrEmpty(preferedRoomName))
+            {
+                var preferedRoom = rooms.FirstOrDefault(r => r.Name == preferedRoomName);
+                if (preferedRoom != null)
+                {
+                    var preferedRoomList = new List<Room>();
+                    preferedRoomList.Add(preferedRoom);
+                    var freePreferedRoom = AvailableNow(ExchangeService, context, preferedRoomList, param.Time);
+                    if (freePreferedRoom.Booked)
+                    {
+                        var calendarItem = ExchangeService.CreateAppointment(context, "Your meeting - by MeetMeNow", "Meeting scheduled through a new astonishing app", freePreferedRoom.Start, freePreferedRoom.End, freePreferedRoom.Room, new List<string> { User.Identity.Name });
+                        freePreferedRoom.CalendarItem = calendarItem;
+                        return Ok(freePreferedRoom);
+                    }
+                }
+            }
 
             var freeRoom = AvailableNow(ExchangeService, context, rooms, param.Time);
 
             if (freeRoom.Booked)
             {
-               var calendarItem = ExchangeService.CreateAppointment(context, "Your meeting - by MeetMeNow", "Meeting scheduled through a new astonishing app", freeRoom.Start, freeRoom.End, freeRoom.Room, new List<string> { User.Identity.Name });
-               freeRoom.CalendarItem = calendarItem;
+                var calendarItem = ExchangeService.CreateAppointment(context, "Your meeting - by MeetMeNow", "Meeting scheduled through a new astonishing app", freeRoom.Start, freeRoom.End, freeRoom.Room, new List<string> { User.Identity.Name });
+                freeRoom.CalendarItem = calendarItem;
             }
 
             return Ok(freeRoom);
@@ -121,7 +143,7 @@ namespace Server.Controllers
 
             var userName = User.Identity.Name;
 
-          
+
 
             HackExchangeContext context = new HackExchangeContext() { Credentials = new NetworkCredential(userName, password), Endpoint = endpoint };
 
@@ -203,6 +225,28 @@ namespace Server.Controllers
 
             return periods;
         }
+
+        private string GetPreferedRoomName(string code)
+        {
+            if (code == "54480")
+            {
+                return "MON - B";
+            }
+            else if (code == "54481")
+            {
+                return "MON - C - No Lifesize";
+            }
+            else if (code == "54483")
+            {
+                return "MON - A";
+            }
+            else if (code == "54484")
+            {
+                return "MON - D (No Lifesize)";
+            }
+
+            return string.Empty;
+        }
     }
 
     public class LoginCredentials
@@ -219,6 +263,8 @@ namespace Server.Controllers
         public bool LifeSize { get; set; }
 
         public int Time { get; set; }
+
+        public string PreferedRoom { get; set; }
     }
 
     public class LoginResult
@@ -245,5 +291,7 @@ namespace Server.Controllers
         public DateTime End { get; set; }
         public bool Free { get; set; }
     }
+
+
 
 }
