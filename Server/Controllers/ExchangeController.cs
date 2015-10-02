@@ -128,8 +128,8 @@ namespace Server.Controllers
         private BookResult AvailableNow(HackExchangeService service, HackExchangeContext context, IEnumerable<Room> rooms, int minutes)
         {
             int periodsNeeded = minutes / 15;
-            var startingTime = DateTime.Now;
-            var now = DateTime.Now;
+            var startingTime = DateTime.UtcNow;
+            var now = DateTime.UtcNow;
             var today = new DateTime(now.Year, now.Month, now.Day, 00, 00, 00);
             var isFree = false;
 
@@ -143,7 +143,7 @@ namespace Server.Controllers
                     {
                         var start = meetingTime.StartTime;
                         var end = meetingTime.EndTime;
-                        while (start < end)
+                        while (start <= end)
                         {
                             var period = periods.FirstOrDefault(p => p.Start <= start && p.End >= start);
                             period.Free = false;
