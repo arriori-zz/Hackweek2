@@ -325,6 +325,35 @@ namespace Server.HackTestWPF
             }
         }
 
+        public bool UpdateAppointment(HackExchangeContext context, CalendarItem appointment, DateTime startTime, DateTime endTime)
+        {
+            var url = context.Endpoint;
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
+            var postBodyTemplate = LoadXml("UpdateAppointment");
+            var startTimeBody = string.Format("{0:yyyy-MM-ddTHH:mm:ssZ}", startTime.ToUniversalTime());
+            var endTimeBody = string.Format("{0:yyyy-MM-ddTHH:mm:ssZ}", endTime.ToUniversalTime());
+            var postBody = string.Format(postBodyTemplate, appointment.Id, appointment.ChangeKey, startTimeBody, endTimeBody);
+            request.Content = new StringContent(postBody, Encoding.UTF8, "text/xml");
+
+            var clientHandler = new HttpClientHandler()
+            {
+                Credentials = context.Credentials
+            };
+            using (var client = new HttpClient(clientHandler))
+            {
+                var response = client.SendAsync(request).Result;
+                var responseBody = response.Content.ReadAsStringAsync().Result;
+
+                var doc = new XPathDocument(new StringReader(responseBody));
+                var nav = doc.CreateNavigator();
+                var nsManager = new XmlNamespaceManager(nav.NameTable);
+                nsManager.AddNamespace("m", "http://schemas.microsoft.com/exchange/services/2006/messages");
+                nsManager.AddNamespace("t", "http://schemas.microsoft.com/exchange/services/2006/types");
+
+                var responseClass = EvaluateXPath(nav, nsManager, "//m:UpdateItemResponseMessage/@ResponseClass");
+                return responseClass == "Success";
+            }
+        }
         public RoomAvailability GetRoomAvailability(HackExchangeContext context, string emailAddress, List<string> attendees, int meetingDuration, bool includeSuggestions)
         {
             var url = context.Endpoint;

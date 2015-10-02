@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages"
+       xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Header>
+  </soap:Header>
+  <soap:Body>
+    <m:UpdateItem MessageDisposition="SaveOnly" ConflictResolution="AlwaysOverwrite" SendMeetingInvitationsOrCancellations="SendToNone">
+      <m:ItemChanges>
+        <t:ItemChange>
+          <t:ItemId Id="{0}" ChangeKey="{1}"/>
+          <t:Updates>
+            <t:SetItemField>
+              <t:FieldURI FieldURI="calendar:Start" />
+              <t:CalendarItem>
+                <t:Start>{2}</t:Start>
+              </t:CalendarItem>
+            </t:SetItemField>
+            <t:SetItemField>
+              <t:FieldURI FieldURI="calendar:End" />
+              <t:CalendarItem>
+                <t:End>{3}</t:End>
+              </t:CalendarItem>
+            </t:SetItemField>
+          </t:Updates>
+        </t:ItemChange>
+      </m:ItemChanges>
+    </m:UpdateItem>
+  </soap:Body>
+</soap:Envelope>
