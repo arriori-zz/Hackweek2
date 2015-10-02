@@ -1,13 +1,13 @@
 ﻿module.controller('AppController', function ($scope, $data, $localStorage, $http) {
 
     ons.ready(function () {
-
         if (($localStorage.credentials) && ($localStorage.token)) {
             $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.token;
             $scope.showPage("quickRoom");
         }
         else {
             $scope.loginmodal.show();
+            //$scope.showPage("quickRoom");
         }
     });
 
