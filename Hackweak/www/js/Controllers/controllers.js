@@ -96,7 +96,7 @@
                     if (now.getTime() - $scope.foundRoomTime.getTime() > 60000) {
                         console.log("You're not in a room");
                         $scope.room = "";
-                        $scop.beaconId = "";
+                        $scope.beaconId = "";
                         $scope.$apply();
                     }
                 }
