@@ -81,9 +81,14 @@ namespace Server.Controllers
         [HttpPost]
         public BookResult addMinutes(string roomId, int minutes, BookResult book)
         {
-            // TODO: Hacer la llamada a Exchange Service
+            var context = GetExchangeContext();
+            var end = book.End.AddMinutes(minutes);
+            var result = ExchangeService.UpdateAppointment(context, book.CalendarItem, book.Start, end);
+            if (result)
+            {
+                book.End = end;
+            }
 
-            book.End = book.End.AddMinutes(minutes);
             return book;
         }
 
