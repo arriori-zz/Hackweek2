@@ -45,6 +45,9 @@ namespace Server.Controllers
             var context = GetExchangeContext();
             var rooms = ExchangeService.GetRooms(context).Where(r => r.Location == "Montevideo, Uruguay" || r.Location == "Montevideo");
 
+            if (param.LifeSize)
+                rooms = rooms.Where(r => !r.Name.Contains("No Lifesize") && !r.Name.Contains("Huddle"));
+
             var freeRoom = AvailableNow(ExchangeService, context, rooms, param.Time);
 
             if (freeRoom.Booked)

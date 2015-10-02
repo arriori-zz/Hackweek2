@@ -1,27 +1,28 @@
 ﻿<div ng-controller="QuickRoomController">
     <ons-navigator var="quickRoomNavigator">
         <ons-page>
-            <ons-row>
-                <ons-col size="70%">
-                    <div style=" margin-top: 10px; margin-left: 10px; color: dimgrey" ng-click="changeLocation()">
-                        <div style="display: inline-block;  font-size: 16px;">{{selectedLocation.Name}}</div>
-                        <ons-icon icon="ion-arrow-down-b" style="display: inline-block; font-size: 12px"></ons-icon>
+            <ons-row class="upper-bar">
+                <ons-col size="20%">
+                    <div class="app-icon"></div>
+                </ons-col>
+                <ons-col size="60%">
+                    <div class="select-city" ng-click="changeLocation()">
+                        <div class="select-city-text">{{selectedLocation.Name}}</div>
+                        <ons-icon class="select-city-icon" icon="ion-arrow-down-b"></ons-icon>
                     </div>
-
                 </ons-col>
 
                 <ons-col align="right">
-                    <ons-icon icon="ion-ios-person-outline" style="margin-top: 5px; margin-right:20px; color: gray; font-size: 30px;" ng-click="logoutClick()"></ons-icon>
+                    <ons-icon class="icon-person" ng-click="logoutClick()"></ons-icon>
                 </ons-col>
 
             </ons-row>
-            <div ng-class="ng-hide" style="text-align: center" ng-show="state == 'registering'">
-
-                <section style="padding: 8px; margin-top: 40px; font-size: 30px ">
+            <div ng-class="ng-hide" g-show="state == 'registering'">
+                <section class="section-search-room-banner">
                     Search a room now
                 </section>
 
-                <section style="padding: 8px; margin-top: 10px;  ">
+                <section class="check-lifesize">
                     <label class="checkbox">
                         <input type="checkbox" ng-model="lifesize">
                         <div class="checkbox__checkmark"></div>

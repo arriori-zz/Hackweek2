@@ -1,17 +1,22 @@
 ﻿<ons-page ng-controller="LoginController">
-    <ons-toolbar>
+    <!--<ons-toolbar>
         <div class="center"></div>
-        <!--<div class="right"><ons-toolbar-button>Close</ons-toolbar-button></div>-->
-    </ons-toolbar>
+        <div class="right"><ons-toolbar-button>Close</ons-toolbar-button></div>
+    </ons-toolbar>-->
 
     <div class="login-form">
+        <div class="banner-login">
+            <div class="logo-login"></div>
+        </div>
+        <div class="inputs-container-login">
+            <input type="email" class="text-input--underbar" placeholder="Email" value="" ng-model="data.username">
+            <input type="password" class="text-input--underbar" placeholder="Password" value="" ng-model="data.password">
+            <ons-button modifier="large" class="login-button" ng-click="signIn()">Log In</ons-button>
+        </div>
 
-        <input type="email" class="text-input--underbar" placeholder="Email" value=""  ng-model="data.username">
-        <input type="password" class="text-input--underbar" placeholder="Password" value=""  ng-model="data.password" >
-        <br><br>
-        <ons-button modifier="large" class="login-button" ng-click="signIn()">Log In</ons-button>
-        <br><br>
-        <!--<ons-button modifier="quiet" class="forgot-password">Forgot password?</ons-button>-->
-    </div>
+    
+
+    <!--<ons-button modifier="quiet" class="forgot-password">Forgot password?</ons-button>-->
+</div>
 
 </ons-page>

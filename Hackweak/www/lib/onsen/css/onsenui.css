@@ -64,7 +64,7 @@ input, textarea {
 }
 
 ons-toolbar ~ .page__content {
-  top: 44px;
+  /*top: 44px;*/
 }
 
 .page__status-bar-fill ~ ons-toolbar {

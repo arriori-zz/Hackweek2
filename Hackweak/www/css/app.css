@@ -33,24 +33,61 @@
         }*/
 
 
-        .login-form {
-  text-align: center;
-  width: 80%;
-  margin: 60px auto 0;
+
+
+/*Login Styles*/
+
+.login-form {}
+
+.banner-login {
+    height: calc(100% - 150px);
+    display: block;
+    position: absolute;
+    width: 100%;
+    background-image: url("../img/bkg-img-login.jpg");
+    background-size: auto 100%;
+}
+.logo-login {
+    width: 240px;
+    height: 120px;
+    background-image: url("../img/logo-login.jpg");
+    margin: 48% auto;
+}
+.inputs-container-login {
+    height: 150px;
+    background-color: #FFF;
+    padding: 30px;
+    position: absolute;
+    bottom: 0px;
+    width: calc(100% - 60px);
+
+}
+.text-input--underbar:invalid {
+    border: 1px solid #E5E5E5;
+    background-color: #E5E5E5;
 }
 
 input[type=email], input[type=password] {
-  display: block;
-  width: 100%;
-  margin: 0 auto;
-  outline: none;
-  padding-top: 24px;
-  padding-bottom: 24px;
+    display: block;
+    width: 100%;
+    outline: none;
+    padding: 20px;
+    margin-bottom: 10px;
+
+    /*Gris clarito*/
+    background-color: #E5E5E5;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    
+    /*Gris Oscuro texto*/
+    color:#666;
 }
 
 .login-button {
   width: 100%;
-  margin: 0 auto;
+  margin: 10px auto;
+  background-color: #428FFE;
+  border-radius: 4px;
 }
 
 .forgot-password {
@@ -58,3 +95,147 @@ input[type=email], input[type=password] {
   margin: 8px auto 0 auto;
   font-size: 14px;
 }
+
+/*Barra inferior*/
+:checked + .tab-bar__button {
+    color: #6F6F6F;
+    background-color: #FFF;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-top: none;
+}
+:checked + .tab-bar__button > .tab-bar__icon {
+    color: #EF5932;
+}
+.tab-bar__button {
+    color: #BEBEBE;
+}
+
+.tab-bar__button {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 17px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+    line-height: normal;
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-decoration: none;
+    padding: 0;
+    height: 49px;
+    letter-spacing: 0;
+    color: #BDBDBD;
+    text-shadow: 0 1px none;
+    vertical-align: top;
+    background-color: #e8e8e8;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-top: 2px solid #BDBDBD;
+    width: 100%;
+    font-weight: 400;
+    line-height: 49px;
+    text-transform: uppercase;
+}
+
+/*Estilo barra superior*/
+.upper-bar {
+    background-color: #222222;
+
+}
+
+.app-icon {
+    width: 26px;
+    height: 33px;
+    background-image: url("../img/icon-app.jpg");
+    background-size: 26px 33px;
+    margin:10px;
+}
+
+.select-city {
+    text-align: center;
+}
+.select-city-text {
+    color: #FFF;
+    display: inline-block;
+    padding: 20px 0px 0px;
+    font-size: 16px;
+
+}
+.select-city-icon {
+    color: #FFF;
+    font-size: 10px;
+}
+
+.icon-person {
+    width: 24px;
+    height: 24px;
+    background-image: url("../img/ic-persona.jpg");
+    background-size: 24px 24px;
+    display: block;
+    margin: 15px 10px 0px;
+    float: right;
+}
+
+/*Search Room section*/
+.section-search-room-banner {
+    height: 300px;
+    color: #FFF;  
+    background-image: url("../img/FindRoom_Background.png");
+    background-size: auto 100%;
+}
+
+/*.check-lifesize {
+    background-color: #FFF;
+    text-align: center;
+    border-bottom: 2px solid #e5e5e5;
+}*/
+
+.check-lifesize  {
+    background-color: #333;
+    text-align: center;
+    border-bottom: 2px solid #333;
+}
+
+.check-lifesize .checkbox  {
+    color:#FFF
+}
+
+.checkbox {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 26px;
+    margin: 10px 0;
+    text-transform: uppercase;
+    color: #888;
+}
+
