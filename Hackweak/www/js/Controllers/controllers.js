@@ -73,18 +73,19 @@
                 var minor = nearestBeacon.minor;
                 var room = "";
                 if (minor == "54480") {
-                    room = "B";
+                    room = "MON - B";
                 } else if (minor == "54481") {
-                    room = "C";
+                    room = "MON - C";
                 } else if (minor == "54483") {
-                    room = "A";
+                    room = "MON - A";
                 } else if (minor == "54484") {
-                    room = "D";
+                    room = "MON - D";
                 }
                 if (room != "") {
                     if ($scope.room != room) {
                         console.log("You entered ROOM " + room);
                         $scope.room = room;
+                        $scope.beaconId = minor;
                         $scope.$apply();
                     }
                     $scope.foundRoomTime = new Date();
@@ -95,6 +96,7 @@
                     if (now.getTime() - $scope.foundRoomTime.getTime() > 60000) {
                         console.log("You're not in a room");
                         $scope.room = "";
+                        $scope.beaconId = "";
                         $scope.$apply();
                     }
                 }
@@ -103,6 +105,7 @@
         };
 
         $scope.room = "";
+        $scope.beaconId = "";
         var region = $scope.createBeacon();
         console.log("Region created");
 
